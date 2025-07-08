@@ -1,11 +1,13 @@
 import cors from "cors";
-import * as dotenv from "dotenv";
+import dotenv from "dotenv";
 import express from "express";
 import http from "http";
 import mediasoup from "mediasoup";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { Server } from "socket.io";
-require("dotenv").config({ quiet: true });
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config({ quiet: true });
+}
 
 const port = process.env.PORT || 5001;
 const app = express();
