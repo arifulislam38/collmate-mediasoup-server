@@ -5,8 +5,8 @@ import http from "http";
 import mediasoup from "mediasoup";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { Server } from "socket.io";
-if (process.env.NODE_ENV !== "production") {
-  dotenv.config({ quiet: true });
+if (!process.env.RENDER) {
+  dotenv.config();
 }
 
 const port = process.env.PORT || 5001;
