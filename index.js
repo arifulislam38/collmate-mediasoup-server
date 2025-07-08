@@ -14,6 +14,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*", methods: ["GET", "POST"] },
+  transports: ["websocket"],
+  perMessageDeflate: false,
   pingInterval: 25000,
   pingTimeout: 60000,
 });
@@ -57,7 +59,7 @@ async function connectDBAndWorker() {
     await client.connect();
     console.log("✅ Connected to MongoDB");
     worker = await mediasoup.createWorker({
-      logLevel: "warn",
+      logLevel: "debug",
       rtcMinPort: 10000,
       rtcMaxPort: 10100,
     });
@@ -70,6 +72,10 @@ connectDBAndWorker().catch((err) => console.error(err));
 
 const db = client.db("collMate");
 const roomCollection = db.collection("rooms");
+
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
 
 const rooms = new Map();
 
@@ -138,21 +144,6 @@ io.on("connection", (socket) => {
             username: "a269001294f994bc81a8167a",
             credential: "VmgU1Di0bWNe7Nuv",
           },
-          {
-            urls: "turn:global.relay.metered.ca:80?transport=tcp",
-            username: "a269001294f994bc81a8167a",
-            credential: "VmgU1Di0bWNe7Nuv",
-          },
-          {
-            urls: "turn:global.relay.metered.ca:443",
-            username: "a269001294f994bc81a8167a",
-            credential: "VmgU1Di0bWNe7Nuv",
-          },
-          {
-            urls: "turns:global.relay.metered.ca:443?transport=tcp",
-            username: "a269001294f994bc81a8167a",
-            credential: "VmgU1Di0bWNe7Nuv",
-          },
         ],
       });
 
@@ -174,21 +165,6 @@ io.on("connection", (socket) => {
           },
           {
             urls: "turn:global.relay.metered.ca:80",
-            username: "a269001294f994bc81a8167a",
-            credential: "VmgU1Di0bWNe7Nuv",
-          },
-          {
-            urls: "turn:global.relay.metered.ca:80?transport=tcp",
-            username: "a269001294f994bc81a8167a",
-            credential: "VmgU1Di0bWNe7Nuv",
-          },
-          {
-            urls: "turn:global.relay.metered.ca:443",
-            username: "a269001294f994bc81a8167a",
-            credential: "VmgU1Di0bWNe7Nuv",
-          },
-          {
-            urls: "turns:global.relay.metered.ca:443?transport=tcp",
             username: "a269001294f994bc81a8167a",
             credential: "VmgU1Di0bWNe7Nuv",
           },
