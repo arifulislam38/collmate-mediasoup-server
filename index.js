@@ -126,12 +126,32 @@ io.on("connection", (socket) => {
         listenIps: [{ ip: "0.0.0.0", announcedIp: null }],
         enableUdp: true,
         enableTcp: true,
-        preferUdp: true,
+        preferUdp: false,
         appData: { clientEmail: email },
         initialAvailableOutgoingBitrate: 1000000,
         iceServers: [
           {
-            urls: ["stun:stun.l.google.com:19302"],
+            urls: "stun:stun.relay.metered.ca:80",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80?transport=tcp",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:443",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
+          },
+          {
+            urls: "turns:global.relay.metered.ca:443?transport=tcp",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
           },
         ],
       });
@@ -145,12 +165,32 @@ io.on("connection", (socket) => {
         listenIps: [{ ip: "0.0.0.0", announcedIp: null }],
         enableUdp: true,
         enableTcp: true,
-        preferUdp: true,
+        preferUdp: false,
         appData: { clientEmail: email },
         initialAvailableOutgoingBitrate: 1000000,
         iceServers: [
           {
-            urls: ["stun:stun.l.google.com:19302"],
+            urls: "stun:stun.relay.metered.ca:80",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80?transport=tcp",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:443",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
+          },
+          {
+            urls: "turns:global.relay.metered.ca:443?transport=tcp",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
           },
         ],
       });
