@@ -5,7 +5,7 @@ import http from "http";
 import mediasoup from "mediasoup";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { Server } from "socket.io";
-dotenv.config({ path: [".env.local",".env"] });
+require("dotenv").config({ quiet: true });
 
 const port = process.env.PORT || 5001;
 const app = express();
