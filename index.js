@@ -129,7 +129,12 @@ io.on("connection", (socket) => {
 
       // Create send transport
       const sendTransport = await room.router.createWebRtcTransport({
-        listenIps: [{ ip: "0.0.0.0", announcedIp: null }],
+        listenIps: [
+          {
+            ip: "0.0.0.0",
+            announcedIp: "https://collmate-mediasoup-server.onrender.com/",
+          },
+        ],
         enableUdp: true,
         enableTcp: true,
         preferUdp: false,
@@ -153,7 +158,12 @@ io.on("connection", (socket) => {
 
       // Create receive transport
       const rcvTransport = await room.router.createWebRtcTransport({
-        listenIps: [{ ip: "0.0.0.0", announcedIp: null }],
+        listenIps: [
+          {
+            ip: "0.0.0.0",
+            announcedIp: "https://collmate-mediasoup-server.onrender.com/",
+          },
+        ],
         enableUdp: true,
         enableTcp: true,
         preferUdp: false,
