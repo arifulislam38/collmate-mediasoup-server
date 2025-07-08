@@ -116,7 +116,7 @@ io.on("connection", (socket) => {
 
       // Create send transport
       const sendTransport = await room.router.createWebRtcTransport({
-        listenIps: [{ ip: "0.0.0.0", announcedIp: "127.0.0.1" }],
+        listenIps: [{ ip: "0.0.0.0", announcedIp: null }],
         enableUdp: true,
         enableTcp: true,
         preferUdp: true,
@@ -129,7 +129,7 @@ io.on("connection", (socket) => {
 
       // Create receive transport
       const rcvTransport = await room.router.createWebRtcTransport({
-        listenIps: [{ ip: "0.0.0.0", announcedIp: "127.0.0.1" }],
+        listenIps: [{ ip: "0.0.0.0", announcedIp: null }],
         enableUdp: true,
         enableTcp: true,
         preferUdp: true,
