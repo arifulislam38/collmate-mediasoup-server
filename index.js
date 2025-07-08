@@ -7,7 +7,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 import { Server } from "socket.io";
 dotenv.config();
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
