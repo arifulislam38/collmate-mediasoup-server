@@ -132,7 +132,7 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp: "https://collmate-mediasoup-server.onrender.com/",
+            announcedIp: "101.2.166.62",
           },
         ],
         enableUdp: true,
@@ -161,7 +161,7 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp: "https://collmate-mediasoup-server.onrender.com/",
+            announcedIp: "101.2.166.62",
           },
         ],
         enableUdp: true,
