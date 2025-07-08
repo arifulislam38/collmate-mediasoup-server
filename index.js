@@ -9,7 +9,7 @@ if (!process.env.RENDER) {
   dotenv.config();
 }
 
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 10000;
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -44,7 +44,12 @@ const mediaCodecs = [
 
 let worker;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000/"],
+    methods: ["GET", "POST"],
+  })
+);
 app.use(express.json());
 
 async function connectDBAndWorker() {
