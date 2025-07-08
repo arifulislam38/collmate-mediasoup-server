@@ -118,11 +118,17 @@ io.on("connection", (socket) => {
 
       // Create send transport
       const sendTransport = await room.router.createWebRtcTransport({
-        listenIps: [{ ip: "0.0.0.0", announcedIp: "100.20.92.101" }],
+        listenIps: [{ ip: "0.0.0.0", announcedIp: null }],
         enableUdp: true,
         enableTcp: true,
         preferUdp: true,
+        appData: { clientEmail: email },
         initialAvailableOutgoingBitrate: 1000000,
+        iceServers: [
+          {
+            urls: ["stun:stun.l.google.com:19302"],
+          },
+        ],
       });
 
       sendTransport.on("dtlsstatechange", (state) => {
@@ -131,11 +137,17 @@ io.on("connection", (socket) => {
 
       // Create receive transport
       const rcvTransport = await room.router.createWebRtcTransport({
-        listenIps: [{ ip: "0.0.0.0", announcedIp: "100.20.92.101" }],
+        listenIps: [{ ip: "0.0.0.0", announcedIp: null }],
         enableUdp: true,
         enableTcp: true,
         preferUdp: true,
+        appData: { clientEmail: email },
         initialAvailableOutgoingBitrate: 1000000,
+        iceServers: [
+          {
+            urls: ["stun:stun.l.google.com:19302"],
+          },
+        ],
       });
 
       rcvTransport.on("dtlsstatechange", (state) => {
