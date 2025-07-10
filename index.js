@@ -9,7 +9,9 @@ import { Server } from "socket.io";
 //   dotenv.config();
 // }
 
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
 
 const port = process.env.PORT || 10000;
 const app = express();
