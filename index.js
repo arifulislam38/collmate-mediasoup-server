@@ -48,8 +48,9 @@ let worker;
 
 app.use(
   cors({
-    origin: ["http://localhost:3000/"],
+    origin: ["http://localhost:3000"],
     methods: ["GET", "POST"],
+    credentials: true,
   })
 );
 app.use(express.json());
@@ -131,13 +132,13 @@ io.on("connection", (socket) => {
       const sendTransport = await room.router.createWebRtcTransport({
         listenIps: [
           {
-            ip: "0.0.0.0",
-            announcedIp: "101.2.166.62",
+            ip: "127.0.0.1",
+            announcedIp: null, // Let Render handle NAT
           },
         ],
         enableUdp: true,
         enableTcp: true,
-        preferUdp: false,
+        preferUdp: false, // Force TCP if needed
         appData: { clientEmail: email },
         initialAvailableOutgoingBitrate: 1000000,
         iceServers: [
@@ -161,12 +162,12 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp: "101.2.166.62",
+            announcedIp: "127.0.0.1", // Let Render handle NAT
           },
         ],
         enableUdp: true,
         enableTcp: true,
-        preferUdp: false,
+        preferUdp: false, // Force TCP if needed
         appData: { clientEmail: email },
         initialAvailableOutgoingBitrate: 1000000,
         iceServers: [
