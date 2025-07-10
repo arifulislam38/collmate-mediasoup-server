@@ -5,6 +5,7 @@ import http from "http";
 import mediasoup from "mediasoup";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { Server } from "socket.io";
+
 // if (!process.env.RENDER) {
 //   dotenv.config();
 // }
@@ -12,6 +13,7 @@ import { Server } from "socket.io";
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
+
 
 const port = process.env.PORT || 10000;
 const app = express();
@@ -23,7 +25,9 @@ const io = new Server(server, {
   pingInterval: 25000,
   pingTimeout: 60000,
 });
+
 const uri = process.env.MONGODB_URI;
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -146,7 +150,7 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp: process.env.RAILWAY_PUBLIC_DOMAIN || "127.0.0.1",
+            announcedIp:"127.0.0.1",
           },
         ],
         enableUdp: true,
@@ -195,7 +199,7 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp: process.env.RAILWAY_PUBLIC_DOMAIN || "127.0.0.1",
+            announcedIp:"127.0.0.1",
           },
         ],
         enableUdp: true,
