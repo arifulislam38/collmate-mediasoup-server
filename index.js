@@ -6,7 +6,7 @@ import mediasoup from "mediasoup";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { Server } from "socket.io";
 if (!process.env.RENDER) {
-  dotenv.config();
+  dotenv.config({ path: "/custom/path/.env" });
 }
 
 const port = process.env.PORT || 10000;
@@ -62,7 +62,7 @@ async function connectDBAndWorker() {
     worker = await mediasoup.createWorker({
       logLevel: "debug",
       rtcMinPort: 10000,
-      rtcMaxPort: 20000,
+      rtcMaxPort: 10100,
     });
     console.log("✅ Mediasoup worker created", worker.pid);
   } catch (err) {
@@ -142,7 +142,7 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp: null,
+            announcedIp: "127.0.0.1",
           },
         ],
         enableUdp: true,
@@ -191,7 +191,7 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp: null,
+            announcedIp: "127.0.0.1",
           },
         ],
         enableUdp: true,
