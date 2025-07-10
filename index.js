@@ -62,7 +62,7 @@ async function connectDBAndWorker() {
     worker = await mediasoup.createWorker({
       logLevel: "debug",
       rtcMinPort: 10000,
-      rtcMaxPort: 10100,
+      rtcMaxPort: 20000,
     });
     console.log("✅ Mediasoup worker created", worker.pid);
   } catch (err) {
@@ -74,8 +74,17 @@ connectDBAndWorker().catch((err) => console.error(err));
 const db = client.db("collMate");
 const roomCollection = db.collection("rooms");
 
-app.get("/health", (req, res) => {
-  res.status(200).send("OK");
+app.get("/health", async (req, res) => {
+  try {
+    await client.db().admin().ping();
+    res.json({
+      status: "healthy",
+      mediasoup: worker ? "running" : "down",
+      mongo: "connected",
+    });
+  } catch (err) {
+    res.status(500).json({ status: "unhealthy", error: err.message });
+  }
 });
 
 const rooms = new Map();
@@ -133,20 +142,29 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp: "127.0.0.1", // Let Render handle NAT
+            announcedIp: null,
           },
         ],
         enableUdp: true,
         enableTcp: true,
-        preferUdp: false, // Force TCP if needed
-        appData: { clientEmail: email },
+        preferUdp: true,
         initialAvailableOutgoingBitrate: 1000000,
         iceServers: [
           {
-            urls: "stun:stun.relay.metered.ca:80",
+            urls: "stun:stun.l.google.com:19302",
           },
           {
             urls: "turn:global.relay.metered.ca:80",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80?transport=tcp",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:443",
             username: "a269001294f994bc81a8167a",
             credential: "VmgU1Di0bWNe7Nuv",
           },
@@ -157,25 +175,45 @@ io.on("connection", (socket) => {
         console.log("🧬 SendServer DTLS state changed:", state);
       });
 
+      sendTransport.on("icegatheringstatechange", (iceGatheringState) => {
+        console.log("ICE gathering state:", iceGatheringState);
+      });
+
+      sendTransport.on("connectionstatechange", (connectionState) => {
+        console.log("Connection state:", connectionState);
+        if (connectionState === "failed") {
+          console.error("Connection failed!");
+        }
+      });
+
       // Create receive transport
       const rcvTransport = await room.router.createWebRtcTransport({
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp: "127.0.0.1", // Let Render handle NAT
+            announcedIp: null,
           },
         ],
         enableUdp: true,
         enableTcp: true,
-        preferUdp: false, // Force TCP if needed
-        appData: { clientEmail: email },
+        preferUdp: true,
         initialAvailableOutgoingBitrate: 1000000,
         iceServers: [
           {
-            urls: "stun:stun.relay.metered.ca:80",
+            urls: "stun:stun.l.google.com:19302",
           },
           {
             urls: "turn:global.relay.metered.ca:80",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80?transport=tcp",
+            username: "a269001294f994bc81a8167a",
+            credential: "VmgU1Di0bWNe7Nuv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:443",
             username: "a269001294f994bc81a8167a",
             credential: "VmgU1Di0bWNe7Nuv",
           },
@@ -184,6 +222,17 @@ io.on("connection", (socket) => {
 
       rcvTransport.on("dtlsstatechange", (state) => {
         console.log("🧬 RcvServer DTLS state changed:", state);
+      });
+
+      rcvTransport.on("icegatheringstatechange", (iceGatheringState) => {
+        console.log("ICE gathering state:", iceGatheringState);
+      });
+
+      rcvTransport.on("connectionstatechange", (connectionState) => {
+        console.log("Connection state:", connectionState);
+        if (connectionState === "failed") {
+          console.error("Connection failed!");
+        }
       });
 
       const participant = room.participants.find((p) => p.user === email);
@@ -446,4 +495,8 @@ io.on("connection", (socket) => {
 
 server.listen(port, () => {
   console.log("✅ Server listening on http://localhost:5000");
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
 });
