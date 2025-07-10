@@ -69,8 +69,8 @@ async function connectDBAndWorker() {
     console.log("✅ Connected to MongoDB");
     worker = await mediasoup.createWorker({
       logLevel: "debug",
-      rtcMinPort: 40000,
-      rtcMaxPort: 40100,
+      rtcMinPort: 10000,
+      rtcMaxPort: 10100,
     });
     console.log("✅ Mediasoup worker created", worker.pid);
   } catch (err) {
