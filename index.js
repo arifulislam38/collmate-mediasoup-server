@@ -150,7 +150,7 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp:"127.0.0.1",
+            announcedIp:null,
           },
         ],
         enableUdp: true,
@@ -199,7 +199,7 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp:"127.0.0.1",
+            announcedIp:null,
           },
         ],
         enableUdp: true,
