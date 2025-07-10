@@ -132,8 +132,8 @@ io.on("connection", (socket) => {
       const sendTransport = await room.router.createWebRtcTransport({
         listenIps: [
           {
-            ip: "127.0.0.1",
-            announcedIp: null, // Let Render handle NAT
+            ip: "0.0.0.0",
+            announcedIp: "127.0.0.1", // Let Render handle NAT
           },
         ],
         enableUdp: true,
