@@ -56,7 +56,7 @@ let worker;
 
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://collmate-mediasoup-client.onrender.com"],
     methods: ["GET", "POST"],
     credentials: true,
   })
@@ -105,6 +105,7 @@ app.get("/health", async (req, res) => {
       status: "healthy",
       mediasoup: worker ? "running" : "down",
       mongo: "connected",
+      publicIp
     });
   } catch (err) {
     res.status(500).json({ status: "unhealthy", error: err.message });
