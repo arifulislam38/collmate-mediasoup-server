@@ -79,21 +79,14 @@ async function connectDBAndWorker() {
 }
 connectDBAndWorker().catch((err) => console.error(err));
 
-async function getPublicIp() {
+function getAnnouncedIp() {
   if (process.env.NODE_ENV === "production") {
-    try {
-      const response = await fetch("https://api.ipify.org?format=json");
-      const data = await response.json();
-      return data.ip;
-    } catch (error) {
-      console.error("Failed to get public IP:", error);
-      return null;
-    }
+    return "101.2.166.62";
   }
   return null;
 }
 
-const publicIp = await getPublicIp();
+const publicIp = getAnnouncedIp();
 
 const db = client.db("collMate");
 const roomCollection = db.collection("rooms");
