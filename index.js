@@ -79,6 +79,22 @@ async function connectDBAndWorker() {
 }
 connectDBAndWorker().catch((err) => console.error(err));
 
+async function getPublicIp() {
+  if (process.env.NODE_ENV === "production") {
+    try {
+      const response = await fetch("https://api.ipify.org?format=json");
+      const data = await response.json();
+      return data.ip;
+    } catch (error) {
+      console.error("Failed to get public IP:", error);
+      return null;
+    }
+  }
+  return null;
+}
+
+const publicIp = await getPublicIp();
+
 const db = client.db("collMate");
 const roomCollection = db.collection("rooms");
 
@@ -150,7 +166,7 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp:null,
+            announcedIp: publicIp,
           },
         ],
         enableUdp: true,
@@ -199,7 +215,7 @@ io.on("connection", (socket) => {
         listenIps: [
           {
             ip: "0.0.0.0",
-            announcedIp:null,
+            announcedIp: publicIp,
           },
         ],
         enableUdp: true,
